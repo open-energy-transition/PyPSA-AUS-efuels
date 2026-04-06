@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# Conda / Pixi / Mamba
+.envs/
+.conda/
+.mamba/
+.pixi/
+
+# Snakemake
+.snakemake/
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Typical large outputs
+results/
+resources/
+networks/
+*.nc
+
