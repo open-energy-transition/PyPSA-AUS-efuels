@@ -14,7 +14,7 @@ This repository is a soft-fork of OET's [PyPSA-Earth](https://github.com/open-en
 This repository is maintained using [OET's soft-fork strategy](https://open-energy-transition.github.io/handbook/docs/Engineering/SoftForkStrategy). OET's primary aim is to contribute as much as possible to the open source (OS) upstream repositories. For long-term changes that cannot be directly merged upstream, the strategy organizes and maintains OET forks, ensuring they remain up-to-date and compatible with upstream, while also supporting future contributions back to the OS repositories.
 
 ## Installation
-More details on configuration, installation, and debuging is available at [OET's soft-fork](https://github.com/open-energy-transition/pypsa-earth).
+More details on configuration, installation, and debugging is available at [OET's soft-fork](https://github.com/open-energy-transition/pypsa-earth).
 
 ## Running the model
 - Run a dryrun of the Snakemake workflow by copying the following command:
