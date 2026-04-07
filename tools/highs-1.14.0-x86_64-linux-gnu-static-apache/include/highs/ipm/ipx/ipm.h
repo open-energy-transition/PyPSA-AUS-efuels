@@ -50,7 +50,7 @@ private:
     void Predictor(Step& step);
     void AddCorrector(Step& step);
     void Centring(Step& step, double mu_to_use);
-    void AssessCentrality(const Vector& xl, const Vector& xu, const Vector& zl, 
+    void AssessCentrality(const Vector& xl, const Vector& xu, const Vector& zl,
                           const Vector& zu,double mu, bool print = true);
     bool EvaluateCentringStep(const Step& step, double prev_ratio, Int prev_bad);
     void StepSizes(const Step& step, bool isCentring = false);

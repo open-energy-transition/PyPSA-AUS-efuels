@@ -20,7 +20,7 @@ You can raise an [issue](https://github.com/ERGO-Code/HiGHS/issues) with HiGHS i
 
 ## Contribute code to HiGHS
 
-HiGHS is open source for distribution rather than contribution. This applies particularly to the core C++ code of the solvers. However, there is definitely scope for external contribution to interfaces and documentation. If you want to contribute in this way, please open an issue before making a pull request, since pull requests to the HiGHS solvers will not normally be accepted. 
+HiGHS is open source for distribution rather than contribution. This applies particularly to the core C++ code of the solvers. However, there is definitely scope for external contribution to interfaces and documentation. If you want to contribute in this way, please open an issue before making a pull request, since pull requests to the HiGHS solvers will not normally be accepted.
 
 Please note that any pull requests to HiGHS must be made to the `latest` branch, so that full testing can take place befor updating `master`. This ensures that `master` is always good to be downloaded by users.
 
@@ -28,4 +28,4 @@ Note that, under the terms of the MIT license, by contributing to HiGHS you assi
 
 ## AI generated contributions ##
 
-Whilst AI may be valuable for generating and communicating suggestions for code and build system developments, the review of AI-generated pull requests (other than the most trivial) would require resources that we don't have, so will not be accepted. If the suggestions are good, they will be implemented by HiGHS developers without the use of AI. 
+Whilst AI may be valuable for generating and communicating suggestions for code and build system developments, the review of AI-generated pull requests (other than the most trivial) would require resources that we don't have, so will not be accepted. If the suggestions are good, they will be implemented by HiGHS developers without the use of AI.

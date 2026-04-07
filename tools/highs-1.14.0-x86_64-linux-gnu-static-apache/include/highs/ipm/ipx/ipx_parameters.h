@@ -66,7 +66,7 @@ struct ipx_parameters {
     bool highs_logging;
     bool timeless_log;
     const HighsLogOptions* log_options;
-  
+
 };
 
 #ifdef __cplusplus

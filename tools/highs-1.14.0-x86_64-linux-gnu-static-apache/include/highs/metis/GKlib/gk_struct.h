@@ -35,7 +35,7 @@ typedef struct {\
 
 
 /*************************************************************************/
-/*! The following data structure stores information about a memory 
+/*! The following data structure stores information about a memory
     allocation operation that can either be served from gk_mcore_t or by
     a gk_malloc if not sufficient workspace memory is available. */
 /*************************************************************************/

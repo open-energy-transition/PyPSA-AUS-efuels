@@ -100,4 +100,3 @@ if(NOT TARGET ${PN}::OpenBLAS)
     get_property(_iid TARGET ${PN}::OpenBLAS PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
     set(${PN}_INCLUDE_DIRS ${_iid})
 endif()
-

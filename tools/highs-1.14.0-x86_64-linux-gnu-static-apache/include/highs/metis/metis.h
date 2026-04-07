@@ -1,5 +1,5 @@
 /*!
-\file metis.h 
+\file metis.h
 \brief This file contains function prototypes and constant definitions for METIS
  *
 \author George
@@ -8,7 +8,7 @@
 */
 
 #ifndef HIGHS_METIS_ORDERING_H
-#define HIGHS_METIS_ORDERING_H 
+#define HIGHS_METIS_ORDERING_H
 
 /****************************************************************************
 * A set of defines that can be modified by the user
@@ -161,7 +161,7 @@ typedef __int64 int64_t;
 
 
 /*------------------------------------------------------------------------
-* Constant definitions 
+* Constant definitions
 *-------------------------------------------------------------------------*/
 /* Metis's version number */
 #define METIS_VER_MAJOR         5
@@ -174,7 +174,7 @@ typedef __int64 int64_t;
 
 
 /*------------------------------------------------------------------------
-* Function prototypes 
+* Function prototypes
 *-------------------------------------------------------------------------*/
 
 #ifdef _WINDLL
@@ -203,7 +203,7 @@ METIS_API(int) Highs_METIS_SetDefaultOptions(idx_t *options);
 
 
 /*------------------------------------------------------------------------
-* Enum type definitions 
+* Enum type definitions
 *-------------------------------------------------------------------------*/
 /*! Return codes */
 typedef enum {
@@ -211,7 +211,7 @@ typedef enum {
   METIS_ERROR_INPUT     = -2,   /*!< Returned due to erroneous inputs and/or options */
   METIS_ERROR_MEMORY    = -3,   /*!< Returned due to insufficient memory */
   METIS_ERROR           = -4    /*!< Some other errors */
-} rstatus_et; 
+} rstatus_et;
 
 
 /*! Operation type codes */

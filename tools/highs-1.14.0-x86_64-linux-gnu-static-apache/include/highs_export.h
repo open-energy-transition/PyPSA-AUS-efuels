@@ -9,15 +9,15 @@
 #  ifndef HIGHS_EXPORT
 #    ifdef highs_EXPORTS
         /* We are building this library */
-#      define HIGHS_EXPORT 
+#      define HIGHS_EXPORT
 #    else
         /* We are using this library */
-#      define HIGHS_EXPORT 
+#      define HIGHS_EXPORT
 #    endif
 #  endif
 
 #  ifndef HIGHS_NO_EXPORT
-#    define HIGHS_NO_EXPORT 
+#    define HIGHS_NO_EXPORT
 #  endif
 #endif
 

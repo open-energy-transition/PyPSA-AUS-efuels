@@ -19,7 +19,7 @@
 
 /* gets the appropriate option value */
 #define GETOPTION(options, idx, defval) \
-            ((options) == NULL || (options)[idx] == -1 ? defval : (options)[idx]) 
+            ((options) == NULL || (options)[idx] == -1 ? defval : (options)[idx])
 
 /* converts a user provided ufactor into a real ubfactor */
 #define I2RUBFACTOR(ufactor) (1.0+0.001*(ufactor))
@@ -31,20 +31,20 @@
 
 
 /*************************************************************************
-* These macros insert and remove nodes from a Direct Access list 
+* These macros insert and remove nodes from a Direct Access list
 **************************************************************************/
 #define ListInsert(n, lind, lptr, i) \
    do { \
      lind[n] = i; \
      lptr[i] = (n)++;\
-   } while(0) 
+   } while(0)
 
 #define ListDelete(n, lind, lptr, i) \
    do { \
      lind[lptr[i]] = lind[--(n)]; \
      lptr[lind[n]] = lptr[i]; \
      lptr[i] = -1; \
-   } while(0) 
+   } while(0)
 
 
 /*************************************************************************

@@ -1,5 +1,5 @@
 /*!
-\file  
+\file
 \brief Templates for portable random number generation
 
 \date   Started 5/17/07

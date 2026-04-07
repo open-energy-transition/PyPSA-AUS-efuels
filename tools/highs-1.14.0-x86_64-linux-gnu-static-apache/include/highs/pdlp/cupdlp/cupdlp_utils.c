@@ -638,7 +638,7 @@ cupdlp_retcode getUserParam(int argc, char **argv,
   // if (argc>0) {
   //   if (strcmp(argv[argc - 1], "-h") == 0) {
   //     PDHG_PrintUserParamHelper();
-      
+
   //     retcode = RETCODE_FAILED;
   //     goto exit_cleanup;
   //   }
@@ -1809,7 +1809,7 @@ void debugPdlpIterLog(FILE* file, const int iter_num, const struct DebugPdlpData
           dual_step);
 }
 
-void debugPdlpFeasOptLog(FILE* file, 
+void debugPdlpFeasOptLog(FILE* file,
                          const int iter_num,
                          const double primal_obj, const double dual_obj,
                          const double gap, const double primal_feas, const double dual_feas,
@@ -1830,14 +1830,14 @@ void debugPdlpRestartLog(FILE* file, const int iter_num, const double current_sc
   fprintf(file, "Restart at iter %6d: Current Score = %.6g, Average Score = %.6g\n", iter_num, current_score, average_score);
 }
 
-void debugPdlpRestarScoretLog(FILE* file, const double weight_squared, const double primal_feas, 
+void debugPdlpRestarScoretLog(FILE* file, const double weight_squared, const double primal_feas,
 const double dual_feas, const double obj_gap) {
   if (!file) return;
-  fprintf(file, "Restart Score: Weight^2 = %.6g, Primal Feas = %.6g, Dual Feas = %.6g, Obj Gap = %.6g\n", 
+  fprintf(file, "Restart Score: Weight^2 = %.6g, Primal Feas = %.6g, Dual Feas = %.6g, Obj Gap = %.6g\n",
   weight_squared, primal_feas, dual_feas, obj_gap);
 }
 
-void debugPdlpFinalSolutionLog(FILE* file, const double* x, int nCols, const double* y, int nRows) {    
+void debugPdlpFinalSolutionLog(FILE* file, const double* x, int nCols, const double* y, int nRows) {
   if (!file) return;
   fprintf(file,"Primal solution (x):\n");
   for (int i = 0; i < nCols; ++i) {

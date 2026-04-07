@@ -42,7 +42,7 @@ idx_t Match_2HopAny(ctrl_t *ctrl, graph_t *graph, idx_t *perm, idx_t *match,
 idx_t Match_2HopAll(ctrl_t *ctrl, graph_t *graph, idx_t *perm, idx_t *match,
           idx_t cnvtxs, size_t *r_nunmatched, size_t maxdegree);
 void PrintCGraphStats(ctrl_t *ctrl, graph_t *graph);
-void CreateCoarseGraph(ctrl_t *ctrl, graph_t *graph, idx_t cnvtxs, 
+void CreateCoarseGraph(ctrl_t *ctrl, graph_t *graph, idx_t cnvtxs,
          idx_t *match);
 graph_t *SetupCoarseGraph(graph_t *graph, idx_t cnvtxs, int dovsize);
 void ReAdjustMemory(ctrl_t *ctrl, graph_t *graph, graph_t *cgraph);
@@ -50,9 +50,9 @@ void ReAdjustMemory(ctrl_t *ctrl, graph_t *graph, graph_t *cgraph);
 
 
 /* compress.c */
-graph_t *CompressGraph(ctrl_t *ctrl, idx_t nvtxs, const idx_t *xadj, const idx_t *adjncy, 
+graph_t *CompressGraph(ctrl_t *ctrl, idx_t nvtxs, const idx_t *xadj, const idx_t *adjncy,
              idx_t *vwgt, idx_t *cptr, idx_t *cind);
-graph_t *PruneGraph(ctrl_t *ctrl, idx_t nvtxs, const idx_t *xadj, const idx_t *adjncy, 
+graph_t *PruneGraph(ctrl_t *ctrl, idx_t nvtxs, const idx_t *xadj, const idx_t *adjncy,
              idx_t *vwgt, idx_t *iperm, real_t factor);
 
 
@@ -64,14 +64,14 @@ idx_t FindSepInducedComponents(ctrl_t *, graph_t *, idx_t *, idx_t *);
 void FM_2WayRefine(ctrl_t *ctrl, graph_t *graph, real_t *ntpwgts, idx_t niter);
 void FM_2WayCutRefine(ctrl_t *ctrl, graph_t *graph, real_t *ntpwgts, idx_t niter);
 void FM_Mc2WayCutRefine(ctrl_t *ctrl, graph_t *graph, real_t *ntpwgts, idx_t niter);
-void SelectQueue(graph_t *graph, real_t *pijbm, real_t *ubfactors, rpq_t **queues, 
+void SelectQueue(graph_t *graph, real_t *pijbm, real_t *ubfactors, rpq_t **queues,
          idx_t *from, idx_t *cnum);
-void Print2WayRefineStats(ctrl_t *ctrl, graph_t *graph, real_t *ntpwgts, 
+void Print2WayRefineStats(ctrl_t *ctrl, graph_t *graph, real_t *ntpwgts,
          real_t deltabal, idx_t mincutorder);
 
 
 /* graph.c */
-graph_t *SetupGraph(ctrl_t *ctrl, idx_t nvtxs, idx_t ncon, const idx_t *xadj, 
+graph_t *SetupGraph(ctrl_t *ctrl, idx_t nvtxs, idx_t ncon, const idx_t *xadj,
              const idx_t *adjncy, idx_t *vwgt, idx_t *vsize, idx_t *adjwgt);
 void SetupGraph_tvwgt(graph_t *graph);
 void SetupGraph_label(graph_t *graph);
@@ -96,9 +96,9 @@ int BetterVBalance(idx_t ncon, real_t *itvwgt, idx_t *v_vwgt, idx_t *u1_vwgt,
             idx_t *u2_vwgt);
 int BetterBalance2Way(idx_t n, real_t *x, real_t *y);
 real_t ComputeLoadImbalance(graph_t *graph, idx_t nparts, real_t *pijbm);
-real_t ComputeLoadImbalanceDiff(graph_t *graph, idx_t nparts, real_t *pijbm, 
+real_t ComputeLoadImbalanceDiff(graph_t *graph, idx_t nparts, real_t *pijbm,
            real_t *ubvec);
-real_t ComputeLoadImbalanceDiffVec(graph_t *graph, idx_t nparts, real_t *pijbm, 
+real_t ComputeLoadImbalanceDiffVec(graph_t *graph, idx_t nparts, real_t *pijbm,
          real_t *ubfactors, real_t *diffvec);
 
 /* mmd.c */
@@ -117,7 +117,7 @@ void MlevelNestedDissectionCC(ctrl_t *ctrl, graph_t *graph, idx_t *order,
 void MlevelNodeBisectionMultiple(ctrl_t *ctrl, graph_t *graph);
 void MlevelNodeBisectionL2(ctrl_t *ctrl, graph_t *graph, idx_t niparts);
 void MlevelNodeBisectionL1(ctrl_t *ctrl, graph_t *graph, idx_t niparts);
-void SplitGraphOrder(ctrl_t *ctrl, graph_t *graph, graph_t **r_lgraph, 
+void SplitGraphOrder(ctrl_t *ctrl, graph_t *graph, graph_t **r_lgraph,
          graph_t **r_rgraph);
 graph_t **SplitGraphOrderCC(ctrl_t *ctrl, graph_t *graph, idx_t ncmps,
               idx_t *cptr, idx_t *cind);
@@ -125,7 +125,7 @@ void MMDOrder(ctrl_t *ctrl, graph_t *graph, idx_t *order, idx_t lastvtx);
 
 
 /* options.c */
-ctrl_t *SetupCtrl(moptype_et optype, idx_t *options, idx_t ncon, idx_t nparts, 
+ctrl_t *SetupCtrl(moptype_et optype, idx_t *options, idx_t ncon, idx_t nparts,
             real_t *tpwgts, real_t *ubvec);
 void Setup2WayBalMultipliers(ctrl_t *ctrl, graph_t *graph, real_t *tpwgts);
 void PrintCtrl(ctrl_t *ctrl);

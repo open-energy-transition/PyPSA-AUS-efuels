@@ -47,4 +47,3 @@ void gk_mcoreDel(gk_mcore_t *mcore, void *ptr);
 
 
 #endif
-

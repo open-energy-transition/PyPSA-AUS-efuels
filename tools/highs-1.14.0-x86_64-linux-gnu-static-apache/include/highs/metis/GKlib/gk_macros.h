@@ -13,11 +13,11 @@
 #include "ipm/hipo/auxiliary/OrderingPrint.h"
 
 /*-------------------------------------------------------------
- * Usefull commands 
+ * Usefull commands
  *-------------------------------------------------------------*/
 #define gk_max(a, b) ((a) >= (b) ? (a) : (b))
 #define gk_min(a, b) ((a) >= (b) ? (b) : (a))
-#define gk_SWAP(a, b, tmp) do {(tmp) = (a); (a) = (b); (b) = (tmp);} while(0) 
+#define gk_SWAP(a, b, tmp) do {(tmp) = (a); (a) = (b); (b) = (tmp);} while(0)
 #define INC_DEC(a, b, val) do {(a) += (val); (b) -= (val);} while(0)
 
 #define ONEOVERRANDMAX (1.0/(RAND_MAX+1.0))
@@ -39,12 +39,12 @@
      for (i=1; i<n; i++) a[i] += a[i-1]; \
      for (i=n; i>0; i--) a[i] = a[i-1]; \
      a[0] = 0; \
-   } while(0) 
+   } while(0)
 
 #define SHIFTCSR(i, n, a) \
    do { \
      for (i=n; i>0; i--) a[i] = a[i-1]; \
      a[0] = 0; \
-   } while(0) 
+   } while(0)
 
 #endif

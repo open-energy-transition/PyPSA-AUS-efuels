@@ -26,7 +26,7 @@
 #endif
 
 
-#ifdef __MSC__ 
+#ifdef __MSC__
   #include "gk_ms_stdint.h"
   #include "gk_ms_inttypes.h"
   #include "gk_ms_stat.h"

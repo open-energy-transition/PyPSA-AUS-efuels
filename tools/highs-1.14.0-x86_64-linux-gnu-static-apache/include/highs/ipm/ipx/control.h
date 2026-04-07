@@ -147,7 +147,7 @@ inline std::string time(double d) { return Fixed(d,8,1); }
 //     Number of variables:                                1464
 //     Number of constraints:                              696
 //
-// consistently via control.hLog(h_logging_stream) using 
+// consistently via control.hLog(h_logging_stream) using
 //
 //   h_logging_stream << Textline("Number of variables:") << 1464 << '\n'
 //                    << Textline("Number of constraints:") << 696 << '\n';

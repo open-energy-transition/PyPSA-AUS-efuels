@@ -1,6 +1,6 @@
 /*
  * GKlib.h
- * 
+ *
  * George's library of most frequently used routines
  *
  * $Id: GKlib.h 14866 2013-08-03 16:40:04Z karypis $
@@ -58,5 +58,3 @@
 
 
 #endif  /* GKlib.h */
-
-

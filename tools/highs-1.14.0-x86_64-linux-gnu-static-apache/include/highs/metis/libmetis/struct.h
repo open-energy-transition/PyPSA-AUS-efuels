@@ -19,7 +19,7 @@
     partition */
 /*************************************************************************/
 typedef struct nrinfo_t {
- idx_t edegrees[2];  
+ idx_t edegrees[2];
 } nrinfo_t;
 
 
@@ -28,7 +28,7 @@ typedef struct nrinfo_t {
 /*************************************************************************/
 typedef struct graph_t {
   idx_t nvtxs, nedges;	/* The # of vertices and edges in the graph */
-  idx_t ncon;		/* The # of constrains */ 
+  idx_t ncon;		/* The # of constrains */
   idx_t *xadj;		/* Pointers to the locally stored vertices */
   idx_t *vwgt;		/* Vertex weights */
   idx_t *vsize;		/* Vertex sizes for min-volume formulation */
@@ -97,7 +97,7 @@ typedef struct ctrl_t {
   real_t pfactor;		/* .1*(user-supplied prunning factor) */
 
   real_t *ubfactors;            /*!< The per-constraint ubfactors */
-  
+
   real_t *tpwgts;               /*!< The target partition weights */
   real_t *pijbm;                /*!< The nparts*ncon multiplies for the ith partition
                                      and jth constraint for obtaining the balance */
@@ -105,11 +105,11 @@ typedef struct ctrl_t {
   real_t cfactor;               /*!< The achieved compression factor */
 
   /* Workspace information */
-  gk_mcore_t *mcore;    /*!< The persistent memory core for within function 
+  gk_mcore_t *mcore;    /*!< The persistent memory core for within function
                              mallocs/frees */
 
   unsigned rng_state;
-  
+
 } ctrl_t;
 
 

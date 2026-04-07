@@ -409,7 +409,7 @@ struct DebugPdlpData {
   double aty_average_norm;
   double x_average_norm;
 };
-    
+
 struct CUPDLP_WORK {
   CUPDLPproblem *problem;
   CUPDLPsettings *settings;
@@ -435,7 +435,7 @@ struct CUPDLP_WORK {
   cublasHandle_t cublashandle;
 #endif
 
-#if PDLP_DEBUG_LOG 
+#if PDLP_DEBUG_LOG
   FILE* debug_pdlp_log_file_;
   struct DebugPdlpData debug_pdlp_data_;
 #endif

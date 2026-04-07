@@ -19,7 +19,7 @@
 
 #define HTLENGTH		((1<<13)-1)
 
-#define INIT_MAXNAD             200     /* Initial number of maximum number of 
+#define INIT_MAXNAD             200     /* Initial number of maximum number of
                                            adjacent domains. This number will be
                                            adjusted as required. */
 

@@ -58,4 +58,3 @@ HiPO uses infinity-norm equilibration of the rows and columns of the
 matrix rather than Curtis-Reid scaling.
 
 ## Build changes
-

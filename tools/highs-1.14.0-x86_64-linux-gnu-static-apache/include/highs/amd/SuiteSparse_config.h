@@ -53,4 +53,3 @@ void *Highs_SuiteSparse_free      // always returns NULL
 #define SUITESPARSE_SUBSUB_VERSION  1
 
 #endif
-

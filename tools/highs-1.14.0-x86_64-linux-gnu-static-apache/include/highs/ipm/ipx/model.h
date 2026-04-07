@@ -95,7 +95,7 @@ public:
 
     // Returns the offset
     const double offset() const { return offset_; }
-  
+
     // Returns a reference to a model vector.
     const Vector& b() const { return b_; }
     const Vector& c() const { return c_; }
