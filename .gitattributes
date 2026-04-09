@@ -1,0 +1,2 @@
+# Ignore a specific folder from language stats
+tools/* linguist-vendored
