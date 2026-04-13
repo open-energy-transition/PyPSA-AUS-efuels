@@ -182,7 +182,7 @@ co2_budget:
   co2base_value: co2limit # choose from: [co2limit, co2base, absolute, {float}]
   year:
     2030: 1.00
-    
+
 electricity:
   base_voltage: 380.
   voltages: [132., 220., 275., 330., 500.]
