@@ -5,6 +5,7 @@
 
 import logging
 import re
+import sys
 import tempfile
 import zipfile
 from pathlib import Path
@@ -13,8 +14,16 @@ import geopandas as gpd
 import pandas as pd
 import pypsa
 import requests
-from _helpers import mock_snakemake
 from scipy.spatial import cKDTree
+
+PYPSA_EARTH_SCRIPTS = Path.cwd() / "scripts"
+if not PYPSA_EARTH_SCRIPTS.exists():
+    PYPSA_EARTH_SCRIPTS = (
+        Path(__file__).resolve().parents[1] / "pypsa-earth" / "scripts"
+    )
+sys.path.insert(0, str(PYPSA_EARTH_SCRIPTS))
+
+from _helpers import mock_snakemake
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +91,47 @@ def parse_month_column(col: str):
     return pd.to_datetime(f"01 {month_abbr} {year}", format="%d %b %Y")
 
 
+def detect_postcode_column(df: pd.DataFrame) -> str:
+    """
+    Detect postcode column in CER dataset.
+    """
+    candidates = [
+        "Small Unit Postcode",
+        "Small Unit Installation Postcode",
+        "Small Unit Installation Post Code",
+        "postcode",
+        "Postcode",
+        "POSTCODE",
+    ]
+
+    for col in candidates:
+        if col in df.columns:
+            return col
+
+    raise KeyError(
+        "Could not find a postcode column in CER dataset. "
+        f"Available columns: {list(df.columns)}"
+    )
+
+
+def detect_capacity_column(df: pd.DataFrame, base_year: int) -> str | None:
+    """
+    Detect a direct cumulative capacity column for the requested base year.
+
+    Preferred choice is the December column for the requested year.
+    """
+    candidates = [
+        f"Dec {base_year} - Rated Power Output In kW",
+        f"December {base_year} - Rated Power Output In kW",
+    ]
+
+    for col in candidates:
+        if col in df.columns:
+            return col
+
+    return None
+
+
 def build_cumulative_capacity_by_postcode(
     cer_path: str | Path,
     base_year: int,
@@ -94,7 +144,7 @@ def build_cumulative_capacity_by_postcode(
     cer_path : str or Path
         Path to CER rooftop solar CSV.
     base_year : int
-        Base year. Monthly additions are summed up to and including Dec base_year.
+        Base year.
 
     Returns
     -------
@@ -104,17 +154,51 @@ def build_cumulative_capacity_by_postcode(
     logger.info("Reading CER dataset from %s", cer_path)
     df = pd.read_csv(cer_path, thousands=",")
 
-    postcode_col = "Small Unit Installation Postcode"
+    postcode_col = detect_postcode_column(df)
     historic_col = "Historic Total Rated Power Output In kW (2001 - 2010)"
+    direct_capacity_col = detect_capacity_column(df, base_year)
 
-    if postcode_col not in df.columns:
-        raise KeyError(f"Column '{postcode_col}' not found in CER dataset.")
-    if historic_col not in df.columns:
-        raise KeyError(f"Column '{historic_col}' not found in CER dataset.")
+    if historic_col not in df.columns and direct_capacity_col is None:
+        raise KeyError(
+            f"Neither '{historic_col}' nor a direct Dec {base_year} capacity column "
+            "was found in CER dataset."
+        )
 
+    logger.info("Using postcode column: %s", postcode_col)
+
+    df = df.copy()
     df[postcode_col] = (
         df[postcode_col].astype(str).str.extract(r"(\d+)")[0].str.zfill(4)
     )
+
+    if direct_capacity_col is not None:
+        logger.info("Using direct cumulative capacity column: %s", direct_capacity_col)
+
+        df[direct_capacity_col] = pd.to_numeric(
+            df[direct_capacity_col], errors="coerce"
+        ).fillna(0.0)
+
+        out = (
+            df[[postcode_col, direct_capacity_col]]
+            .rename(
+                columns={postcode_col: "postcode", direct_capacity_col: "capacity_kw"}
+            )
+            .groupby("postcode", as_index=False)["capacity_kw"]
+            .sum()
+        )
+
+        logger.info(
+            "Built cumulative rooftop capacity by postcode from direct Dec %s column: %.3f GW total",
+            base_year,
+            out["capacity_kw"].sum() / 1e6,
+        )
+        return out
+
+    logger.info(
+        "Direct Dec %s column not found. Falling back to historic + monthly additions.",
+        base_year,
+    )
+
     df[historic_col] = pd.to_numeric(df[historic_col], errors="coerce").fillna(0.0)
 
     monthly_cols = []
@@ -180,7 +264,6 @@ def load_postcode_centroids(shapefile_path: str | Path) -> pd.DataFrame:
     if postcode_col not in poa.columns:
         raise KeyError(f"Column '{postcode_col}' not found in POA shapefile.")
 
-    # Compute centroids in the native projected CRS, then convert to WGS84.
     centroids = gpd.GeoSeries(poa.geometry.centroid, crs=poa.crs).to_crs(epsg=4326)
 
     out = pd.DataFrame(

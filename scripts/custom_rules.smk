@@ -1,6 +1,7 @@
 rule build_rooftop_solar_existing:
     input:
         cer="../data/electricity/sgu-solar-capacity-2011-to-present-and-totals.csv",
+        poa_shp="../data/shapes/POA_2021_AUST_GDA2020_SHP/POA_2021_AUST_GDA2020.shp",
         network="networks/" + RDIR + "elec_s{simpl}_{clusters}.nc",
     output:
         "resources/"
