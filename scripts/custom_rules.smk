@@ -112,6 +112,8 @@ if config.get("custom_industry", {}).get("enable", False):
 if config.get("custom_hydrogen_demand", {}).get("enable", False):
 
     rule add_custom_hydrogen_demand:
+        params:
+            annual_demand_tpa=lambda wildcards: config["custom_hydrogen_demand"]["annual_demand_tpa"],
         input:
             network=(
                 "results/"

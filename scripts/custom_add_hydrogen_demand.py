@@ -36,10 +36,20 @@ def add_custom_hydrogen_demand(n, config, nhours):
 
     annual_demand_mwh = annual_demand_tpa * H2_MWH_PER_TON
 
-    h2_buses = pd.Index([bus for bus in n.buses.index if bus.endswith(" grid H2")])
+    h2_buses = pd.Index(
+        [
+            bus
+            for bus in n.buses.index
+            if bus.endswith(" H2")
+            and not any(
+                bus.endswith(f" {color} H2")
+                for color in ["grid", "green", "grey", "blue", "pink"]
+            )
+        ]
+    )
 
     if h2_buses.empty:
-        raise ValueError("No '* grid H2' buses found for custom hydrogen demand.")
+        raise ValueError("No final '* H2' buses found for custom hydrogen demand.")
 
     market_bus = "custom H2 demand market"
     load_name = "custom H2 demand"
@@ -85,7 +95,7 @@ def add_custom_hydrogen_demand(n, config, nhours):
 
     logger.warning(
         f"Added custom aggregated H2 demand: {annual_demand_tpa:.2f} tH2/a "
-        f"= {annual_demand_mwh:.2f} MWh/a, supplied by {len(h2_buses)} grid H2 buses."
+        f"= {annual_demand_mwh:.2f} MWh/a, supplied by {len(h2_buses)} H2 buses."
     )
 
     return n
