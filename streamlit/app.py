@@ -94,6 +94,7 @@ tech_data: dict[str, dict[str, int | str]] = {
 
 load_data: dict[str, dict[str, int | str]] = {
     #    "electricity": {"multiplier": 1, "label": "Electricity"},
+    "diesel": {"multiplier": 0, "label": "Diesel", "cost": 2500},
     "e-hydrogen": {"multiplier": 1, "label": "eHydrogen", "cost": 2000},
     "e-ammonia": {"multiplier": 1, "label": "eAmmonia", "cost": 700},
     "e-methanol": {"multiplier": 1, "label": "eMethanol", "cost": 700},
@@ -229,20 +230,9 @@ if t_welcome.open:
 
             This application has been developed during a project between **Open Energy Transition (OET)** and **Sagax Capital / Keshik Capital** to assess the impact on Australia on local Ammonia and Methanol production.
 
-            In 2025, Australia's Diesel consumption was about 32 bn liter or 27.2 MTPA (million ton per annum).
+            In 2025, Australia's Diesel consumption was about 32 bn liter or 27.2 MTPA (million ton per annum). About 85% (or more than 23 MTPA) needed to be imported. Assuming AUD 3/liter, this makes more than AUD ~80 bn of import costs for Diesel alone, every year with a growth rate of 5-10%/year.
+
             Ammonia consumption was about 2 MTPA, where about 50% was used in agriculture, 35% in mining and explosives, and the rest in industry and chemicals.
-
-            The table below shows a high-level comparison on population, gross domestic product (GDP), diesel consumption, and agriculture production by State / Territory.
-
-            | State / Territory | Population Share (%) | GDP Share (%) | Diesel Consumption Share (%) | Agriculture Production Share (%) |
-            |-----|-----|-----|-----|-----|
-            | Western Australia | 11.0% | 17.0% | 24.4% | 21.5% |
-            | Queensland | 20.5% | 19.3% | 26.5% | 18.0% |
-            | Northern Territory | 1.0% | 1.3% | 3.0% | 1.0% |
-            | NSW / ACT | 32.9% | 32.6% | 22.5% | 29.0% |
-            | Victoria | 25.6% | 22.7% | 17.4% | 19.0% |
-            | South Australia | 6.9% | 5.6% | 4.8% | 9.0% |
-            | Tasmania | 2.1% | 1.6% | 1.4% | 2.5% |
 
             The project aims to evaluate the potential for local production of these chemicals using renewable energy sources, and how this does help Australia in its energy transition and resilience.
 
@@ -294,14 +284,14 @@ if t_economic.open:
                         tech_data[d]["mc"],
                     )
 
-                col1, col2, col3, col4 = st.columns(4, vertical_alignment="center")
+                col1, col2, col3, col4 = st.columns(4, vertical_alignment="top")
                 with col3:
                     st.write("**Capital Cost (AUD/MW)**")
                 with col4:
                     st.write("**Marginal Cost (AUD/MWh)**")
 
                 for d in tech_data:
-                    col1, col2, col3, col4 = st.columns(4, vertical_alignment="center")
+                    col1, col2, col3, col4 = st.columns(4, vertical_alignment="top")
                     with col1:
                         st.write(f"**{tech_data[d]['label']}**")
                     with col2:
@@ -399,7 +389,7 @@ if t_demand.open:
                         n.loads_t.p[loads].sum().sum() / 1e6
                     )  # convert to MTPA
                 #
-                col1, col2, col3, col4 = st.columns(4, vertical_alignment="center")
+                col1, col2, col3, col4 = st.columns(4, vertical_alignment="top")
                 with col2:
                     st.write("**Old Demand**")
                 with col3:
@@ -408,21 +398,23 @@ if t_demand.open:
                     st.write("**Proposed Price / Tonne**")
                 #
                 for l in load_data:
-                    col1, col2, col3, col4 = st.columns(4, vertical_alignment="center")
+                    col1, col2, col3, col4 = st.columns(4, vertical_alignment="top")
                     with col1:
                         st.write(f"**{load_data[l]['label']}**")
                     with col2:
-                        st.write(f"{old_multiplier[l]:.1f} MTPA")
+                        if l != "diesel":
+                            st.write(f"{old_multiplier[l]:.1f} MTPA")
                     with col3:
-                        new_multiplier[l] = st.slider(
-                            label=f"Demand Multiplier {l}",
-                            label_visibility="collapsed",
-                            min_value=0.0,
-                            max_value=20.0,
-                            step=0.1,
-                            value=round_multiple(old_multiplier[l], 0.1),
-                            format="%.1f MTPA",
-                        )
+                        if l != "diesel":
+                            new_multiplier[l] = st.slider(
+                                label=f"Demand Multiplier {l}",
+                                label_visibility="collapsed",
+                                min_value=0.0,
+                                max_value=20.0,
+                                step=0.1,
+                                value=round_multiple(old_multiplier[l], 0.1),
+                                format="%.1f MTPA",
+                            )
                     with col4:
                         new_cost[l] = st.slider(
                             label=f"Cost {l}",
@@ -433,6 +425,11 @@ if t_demand.open:
                             value=round_multiple(load_data[l]["cost"], 0.1),
                             format="%.1f AUD/Tonne",
                         )
+                        if l == "diesel":
+                            st.write(f"Equals AUD ~{new_cost[l]/0.85/1000:.2f}/liter")
+                            st.write("")
+                            st.write("")
+
                 st.session_state.old_multiplier = old_multiplier
                 st.session_state.new_multiplier = new_multiplier
                 st.session_state.new_cost = new_cost
@@ -440,24 +437,25 @@ if t_demand.open:
             if st.button("Apply New Demand"):
                 name_loads = []
                 for l in load_data:
-                    nr_loads = len(n.loads.index[n.loads.carrier.str.contains(l)])
-                    for load in n.loads.index[n.loads.carrier.str.contains(l)]:
-                        # update the recent load with the adjusted load
-                        if old_multiplier[l] > 0:
-                            n.loads.loc[load, "p_set"] = (
-                                new_multiplier[l]
-                                * 1e6
-                                / 8760
-                                / old_multiplier[l]
-                                / nr_loads
-                            )
-                        else:
-                            n.loads.loc[load, "p_set"] = (
-                                new_multiplier[l] * 1e6 / 8760 / nr_loads
-                            )
-                        n.loads_t.p[load] = n.loads.loc[load, "p_set"]
-                        # save the name of the load for later use
-                        name_loads.append(load)
+                    if l != "diesel":
+                        nr_loads = len(n.loads.index[n.loads.carrier.str.contains(l)])
+                        for load in n.loads.index[n.loads.carrier.str.contains(l)]:
+                            # update the recent load with the adjusted load
+                            if old_multiplier[l] > 0:
+                                n.loads.loc[load, "p_set"] = (
+                                    new_multiplier[l]
+                                    * 1e6
+                                    / 8760
+                                    / old_multiplier[l]
+                                    / nr_loads
+                                )
+                            else:
+                                n.loads.loc[load, "p_set"] = (
+                                    new_multiplier[l] * 1e6 / 8760 / nr_loads
+                                )
+                            n.loads_t.p[load] = n.loads.loc[load, "p_set"]
+                            # save the name of the load for later use
+                            name_loads.append(load)
 
                 st.success("Updated details for mentioned carriers ...")
                 df = n.loads[["carrier", "p_set"]]
@@ -570,7 +568,8 @@ if t_optimization.open:
                     new_cost = st.session_state.new_cost
                     avoided_import_cost = 0
                     for l in load_data:
-                        avoided_import_cost += new_multiplier[l] * new_cost[l] * 1e6
+                        if l != "diesel":
+                            avoided_import_cost += new_multiplier[l] * new_cost[l] * 1e6
                     #
                     old_total_cost = avoided_import_cost
                     new_total_cost = n2.objective
