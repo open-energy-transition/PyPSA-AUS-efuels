@@ -285,6 +285,8 @@ if t_economic.open:
                     )
 
                 col1, col2, col3, col4 = st.columns(4, vertical_alignment="top")
+                with col2:
+                    st.write("**Discount Rate (%)**")
                 with col3:
                     st.write("**Capital Cost (AUD/MW)**")
                 with col4:
