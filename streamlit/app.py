@@ -140,7 +140,6 @@ def show_statistics(n: pypsa.Network):
 
 
 title = "AUS eFuels"
-st.set_page_config(layout="wide", page_title=title)
 st.set_page_config(page_title=f"{title} UI", layout="wide")
 st.title(f"{title} Interactive Manager")
 st.write("Walk through the tabs below from left to the right ...")
