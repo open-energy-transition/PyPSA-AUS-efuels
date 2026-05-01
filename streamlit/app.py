@@ -277,15 +277,18 @@ if t_economic.open:
                 new_cc = {}
                 old_mc = {}
                 new_mc = {}
+                # Discount rates are stored in the PyPSA network as fractions
+                # (e.g. 0.07 for 7%), while the Streamlit UI displays percentages.
                 for d in tech_data:
                     old_lt[d] = replace_nan(
                         g.loc[g.carrier.str.startswith(d), "lifetime"].mean(),
                         tech_data[d]["lt"],
                     )
-                    old_dr[d] = replace_nan(
+                    old_dr_fraction = replace_nan(
                         g.loc[g.carrier.str.startswith(d), "discount_rate"].mean(),
                         tech_data[d]["dr"] / 100,
                     )
+                    old_dr[d] = old_dr_fraction * 100
                     old_cc[d] = replace_nan(
                         g.loc[g.carrier.str.startswith(d), "capital_cost"].mean(),
                         investment_cost(tech_data[d]["cc"], old_dr[d], old_lt[d]),
@@ -343,14 +346,16 @@ if t_economic.open:
 
             if st.button("Apply New Costs"):
                 g["discount_rate"] = g.get("discount_rate", st.session_state.dr)
-                g.loc[g.discount_rate.astype(str).isnull(), "discount_rate"] = (
-                    st.session_state.dr
+                g.loc[g.discount_rate.isnull(), "discount_rate"] = (
+                    st.session_state.dr / 100
                 )
 
                 for d in tech_data:
                     if len(g.carrier[g.carrier == d]):
                         # don't change 'lifetime' for now
-                        g.loc[g.carrier.str.startswith(d), "discount_rate"] = new_dr[d]
+                        g.loc[g.carrier.str.startswith(d), "discount_rate"] = (
+                            new_dr[d] / 100
+                        )
                         g.loc[g.carrier.str.startswith(d), "capital_cost"] = (
                             new_cc[d]
                             * annuity_factor(new_dr[d] / 100, tech_data[d]["lt"])
@@ -538,14 +543,9 @@ if t_optimization.open:
 
                 if run_mode == "Week per Month":
                     start_day = (weeks - 1) * 7 + 1
-                    end_day = start_day + 7
-                    months = months  # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                else:
-                    start_day = 1
-                    end_day = start_day + 1
-                    months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
-                if run_mode != "Full Year":
+                    end_day = start_day + 7
+
                     sns_before = len(n2.snapshots)
                     sns_subset = get_snapshots(
                         n2, start_day=start_day, end_day=end_day, months=months
