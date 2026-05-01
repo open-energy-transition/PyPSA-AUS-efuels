@@ -124,6 +124,13 @@ def round_multiple(number: float, multiple: float = 50.0):
     return float(multiple * round(number / multiple))
 
 
+def to_fraction_discount_rate(discount_rate: float) -> float:
+    """Convert discount rates above 1 from percent to fraction."""
+    if pd.isna(discount_rate):
+        return np.nan
+    return discount_rate / 100 if discount_rate > 1 else discount_rate
+
+
 def show_statistics(n: pypsa.Network):
     if st.session_state.n is not None:
         st.header("Network Statistics (rows)")
@@ -185,7 +192,10 @@ with st.sidebar:
         with st.spinner("Loading network..."):
             n = pypsa.Network(tmp_path)
             g = n.generators
-            g["discount_rate"] = g.get("discount_rate", st.session_state.dr)
+            if "discount_rate" not in g.columns:
+                g["discount_rate"] = st.session_state.dr / 100
+            else:
+                g["discount_rate"] = g["discount_rate"].apply(to_fraction_discount_rate)
             st.session_state.n = n
             st.session_state.network_loaded = True
             st.success("Network loaded successfully!")
